@@ -194,8 +194,7 @@ class _Screen2State extends State<Screen2> {
 
   var waktu = DateTime.now().hour;
   var date = DateTime.now();
-  static var today = DateTime.now();
-  var formatedTanggal = DateFormat('EEE, MMM d, ' 'yy').format(today);
+  var formatedTanggal = DateFormat('EEE, MMM d, ' 'yy').format(DateTime.now());
   var valueSalam = '';
   void salam() {
     if (waktu < 12) {
@@ -467,50 +466,6 @@ class _Screen2State extends State<Screen2> {
                                   ),
                                 );
                               }),
-                          // child: ListView.builder(
-                          //     itemCount: listBy5day.length,
-                          //     itemBuilder: (BuildContext context, int index) {
-                          //       var list = listBy5day[index];
-                          //       double cel = listBy5day[index]['main']['temp'] - 273.15;
-                          //       return Container(
-                          //         child: Row(
-                          //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //           children: [
-                          //             Row(
-                          //               children: [
-                          //                 Image.network('http://openweathermap.org/img/w/${list['weather'][0]['icon']}.png'),
-                          //                 Padding(
-                          //                   padding: const EdgeInsets.only(left: 12.0, top: 8.0, bottom: 8.0),
-                          //                   child: Column(
-                          //                     crossAxisAlignment: CrossAxisAlignment.start,
-                          //                     children: [
-                          //                       Text(list['weather'][0]['description'], style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
-                          //                       Text(list['weather'][0]['main'], style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400)),
-                          //                       Text(cel.toStringAsFixed(2), style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400))
-                          //                     ],
-                          //                   ),
-                          //                 ),
-                          //               ],
-                          //             ),
-                          //             Padding(
-                          //               padding: const EdgeInsets.all(8.0),
-                          //               child: Column(
-                          //                 crossAxisAlignment: CrossAxisAlignment.end,
-                          //                 children: [
-                          //                   Text(list['dt_txt'].toString().split(' ')[1].characters.take(5).toString(),
-                          //                       style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                          //                   SizedBox(
-                          //                     width: 100,
-                          //                     child: Text('${Jiffy(list['dt_txt'].toString().split(' ')[0].toString()).yMMMMd}',
-                          //                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       );
-                          //     }),
                         ),
         ],
       ),

@@ -172,14 +172,18 @@ class _Screen1State extends State<Screen1> {
                             return 'Nama Lengkap harus di isi';
                           }
                         },
-                        decoration: const InputDecoration(hintText: "Silahkan Masukan Nama Lengkap", border: OutlineInputBorder()),
+                        decoration: const InputDecoration(
+                          hintText: "Silahkan Masukan Nama Lengkap",
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue, width: 2)),
+                          contentPadding: EdgeInsets.all(6),
+                        ),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SearchChoices.single(
-                      onClear: (){
+                      onClear: () {
                         listKota.clear();
                       },
                       value: valueProvinsi,
@@ -226,7 +230,7 @@ class _Screen1State extends State<Screen1> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SearchChoices.single(
-                      onClear: (){
+                      onClear: () {
                         listKota.clear();
                       },
                       value: valueKota,
