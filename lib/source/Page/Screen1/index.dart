@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:search_choices/search_choices.dart';
@@ -21,14 +22,16 @@ class _Screen1State extends State<Screen1> {
   List<Provinsi> listProvinsi = [];
   List<Provinsi> listFilter = [];
   List<Kota> listKota = [];
-  var valueProvinsi;
-  var valueProvId;
-  var valueKota;
-  var valueKotaId;
+  var valueProvinsi = '';
+  var valueProvId = 0;
+  var valueKota = '';
+  var valueKotaId = 0;
   void getProvinsi() async {
+    setState(() {
+      listProvinsi.clear();
+    });
     try {
-      var url = Uri.parse(
-          'http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
+      var url = Uri.parse('http://www.emsifa.com/api-wilayah-indonesia/api/provinces.json');
       var response = await http.get(url);
       var json = jsonDecode(response.body);
       var array = [];
@@ -43,13 +46,33 @@ class _Screen1State extends State<Screen1> {
       print('Provinsi: ${array}');
     } catch (e) {
       print('Error: $e');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [Text(e.toString())],
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'))
+              ],
+            );
+          });
     }
   }
 
   void getKota(var id_kota) async {
+    setState(() {
+      listKota.clear();
+    });
     try {
-      var url = Uri.parse(
-          'http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id_kota}.json');
+      var url = Uri.parse('http://www.emsifa.com/api-wilayah-indonesia/api/regencies/${id_kota}.json');
       var response = await http.get(url);
       var json = jsonDecode(response.body);
       var array = [];
@@ -60,13 +83,30 @@ class _Screen1State extends State<Screen1> {
         // }
         array.map((e) {
           var a = e['id'];
-          listKota.add(
-              Kota(int.parse(e['id']), int.parse(e['province_id']), e['name']));
+          listKota.add(Kota(int.parse(e['id']), int.parse(e['province_id']), e['name']));
         }).toList();
       });
       print('Kota: $json');
     } catch (e) {
       print('Error: $e');
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Alert'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [Text(e.toString())],
+              ),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'))
+              ],
+            );
+          });
     }
   }
 
@@ -75,6 +115,7 @@ class _Screen1State extends State<Screen1> {
       setState(() {});
       return;
     }
+    listFilter.clear();
     listProvinsi.forEach((element) {
       if (element.name.contains(text) || element.id.toString().contains(text)) {
         listFilter.add(element);
@@ -97,25 +138,27 @@ class _Screen1State extends State<Screen1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blue[400],
       body: Center(
         child: ListView(
           shrinkWrap: true,
           children: [
+            const Icon(MaterialCommunityIcons.weather_windy_variant, color: Colors.white, size: 100),
+            const Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Center(child: Text('Weather', style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w600))),
+            ),
             Container(
               margin: const EdgeInsets.all(12.0),
               padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 3,
-                      blurRadius: 10,
-                      offset: Offset(0, 3),
-                    ),
-                  ]),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0), boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 3,
+                  blurRadius: 10,
+                  offset: Offset(0, 3),
+                ),
+              ]),
               child: Column(
                 children: [
                   Padding(
@@ -129,15 +172,16 @@ class _Screen1State extends State<Screen1> {
                             return 'Nama Lengkap harus di isi';
                           }
                         },
-                        decoration: const InputDecoration(
-                            hintText: "Silahkan Masukan Nama Lengkap",
-                            border: OutlineInputBorder()),
+                        decoration: const InputDecoration(hintText: "Silahkan Masukan Nama Lengkap", border: OutlineInputBorder()),
                       ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SearchChoices.single(
+                      onClear: (){
+                        listKota.clear();
+                      },
                       value: valueProvinsi,
                       items: listProvinsi.map((item) {
                         return DropdownMenuItem(
@@ -182,6 +226,9 @@ class _Screen1State extends State<Screen1> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SearchChoices.single(
+                      onClear: (){
+                        listKota.clear();
+                      },
                       value: valueKota,
                       items: listKota.map((item) {
                         return DropdownMenuItem(
@@ -230,10 +277,7 @@ class _Screen1State extends State<Screen1> {
               child: SizedBox(
                 height: 45,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.white,
-                    onPrimary: Colors.blue[200]
-                  ),
+                    style: ElevatedButton.styleFrom(primary: Colors.white, onPrimary: Colors.blue[200]),
                     onPressed: () {
                       if (formkey.currentState!.validate()) {
                         if (valueProvinsi == null) {
@@ -247,18 +291,16 @@ class _Screen1State extends State<Screen1> {
                             print('masih kosong kota');
                           } else {
                             print('sudah ke isi');
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Screen2(
-                                        // controllerNama.text, valueKota
-                                        )));
+                            // controllerNama.clear();
+                            valueKota;
+                            valueProvinsi;
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Screen2(controllerNama.text, valueKota)));
                           }
                         }
                       }
                     },
-                    child: Text(
-                      'LOGIN',
+                    child: const Text(
+                      'PROSES',
                       style: TextStyle(fontSize: 17, color: Colors.blue),
                     )),
               ),

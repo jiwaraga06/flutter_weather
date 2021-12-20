@@ -1,9 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.weather">
    <application
-        android:label="weather"
+        android:label="weatherByMe"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/cloud">
         <activity
             android:name=".MainActivity"
             android:exported="true"

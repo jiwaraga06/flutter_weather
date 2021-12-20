@@ -38,6 +38,9 @@ dependencies:
   dropdown_search: ^2.0.1
   searchable_dropdown: ^1.1.0
   search_choices: ^2.0.16
+  flutter_icons: ^1.1.0
+  intl: ^0.17.0
+  jiffy: ^5.0.0
 
 dev_dependencies:
   flutter_test:
